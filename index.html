@@ -3,65 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taller ERP SAP</title>
+    <title>Inscripción - Taller SAP</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
             text-align: center;
+            padding: 20px;
         }
         .container {
-            width: 80%;
-            margin: auto;
+            max-width: 600px;
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
         }
-        .header {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            background: #0073e6;
-            color: white;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-        .header img {
+        img {
             width: 80px;
-            margin-right: 20px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
-        .header h1 {
-            margin: 0;
-        }
-        .button {
-            display: inline-block;
-            margin: 20px;
-            padding: 10px 20px;
-            font-size: 18px;
+        button {
+            background-color: #007bff;
             color: white;
-            background: #0073e6;
             border: none;
-            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
             cursor: pointer;
-            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
         }
-        .button:hover {
-            background: #005bb5;
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
+    <img src="1.png" alt="Logo">
     <div class="container">
-        <div class="header">
-            <img src="1.png" alt="Logo">
-            <h1>Taller ERP SAP</h1>
-        </div>
-        <p>Aprende sobre los módulos más importantes de SAP con instructores expertos.</p>
-        <a href="#" class="button">Ver Temario</a>
-        <a href="#" class="button">Inscribirme</a>
+        <h2>Inscripción - Taller de Procesos ERP SAP</h2>
+        <form id="inscripcionForm">
+            <label>Nombre:</label><br>
+            <input type="text" id="nombre" required><br>
+            
+            <label>Empresa/Estudiante:</label><br>
+            <input type="text" id="empresa" required><br>
+            
+            <label>¿Cómo te enteraste?:</label><br>
+            <input type="text" id="referencia" required><br>
+            
+            <label>Email:</label><br>
+            <input type="email" id="email" required><br>
+            
+            <label>Teléfono:</label><br>
+            <input type="tel" id="telefono" required><br>
+            
+            <button type="button" onclick="generarPDF()">Generar PDF e Inscribirme</button>
+        </form>
     </div>
+    
+    <script>
+        function generarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const nombre = document.getElementById("nombre").value;
+            const empresa = document.getElementById("empresa").value;
+            const referencia = document.getElementById("referencia").value;
+            const email = document.getElementById("email").value;
+            const telefono = document.getElementById("telefono").value;
+            
+            if (!nombre || !empresa || !referencia || !email || !telefono) {
+                alert("Por favor, completa todos los campos");
+                return;
+            }
+            
+            doc.text("Formulario de Inscripción", 20, 20);
+            doc.text("Nombre: " + nombre, 20, 30);
+            doc.text("Empresa/Estudiante: " + empresa, 20, 40);
+            doc.text("¿Cómo te enteraste?: " + referencia, 20, 50);
+            doc.text("Email: " + email, 20, 60);
+            doc.text("Teléfono: " + telefono, 20, 70);
+            doc.text("Datos Bancarios: XXXXXXXXXXXXXXXXXXXXXXXX", 20, 90);
+            
+            doc.save("Inscripcion_SAP.pdf");
+            alert("PDF generado y descargado. Revisa tu carpeta de descargas.");
+        }
+    </script>
 </body>
 </html>
