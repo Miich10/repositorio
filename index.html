@@ -1,23 +1,104 @@
-function generarPDF() {
-    const cursos = {
-        "PP": "Production Planning Advanced",
-        "ABAP": "Advanced Business Application Programming",
-        "QM": "Quality Managements",
-        "PM": "Plant Maintenance"
-    };
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción Cursos SAP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
 
-    const instructores = {
-        "15": { experiencia: "15 años", precio: 6000, cuenta: "XXXXXXXXXX" },
-        "2": { experiencia: "2 años", precio: 3000, cuenta: "XXXXXXXXXX" }
-    };
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
 
-    const cursoSeleccionado = document.getElementById("curso").value;
-    const instructorSeleccionado = document.getElementById("instructor").value;
+        h2 {
+            text-align: center;
+        }
 
-    const cursoNombre = cursos[cursoSeleccionado];
-    const instructor = instructores[instructorSeleccionado];
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-    const pdfContent = `
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #pdf-content {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 5px solid #ffcc00;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📚 Inscripción a Cursos SAP</h2>
+    
+    <label for="curso">Selecciona un curso:</label>
+    <select id="curso">
+        <option value="PP">Production Planning Advanced</option>
+        <option value="ABAP">Advanced Business Application Programming</option>
+        <option value="QM">Quality Managements</option>
+        <option value="PM">Plant Maintenance</option>
+    </select>
+
+    <label for="instructor">Selecciona un instructor:</label>
+    <select id="instructor">
+        <option value="15">Instructor con 15 años de experiencia - $6,000</option>
+        <option value="2">Instructor con 2 años de experiencia - $3,000</option>
+    </select>
+
+    <button onclick="generarPDF()">📄 Generar PDF</button>
+
+    <div id="pdf-content"></div>
+</div>
+
+<script>
+    function generarPDF() {
+        const cursos = {
+            "PP": "Production Planning Advanced",
+            "ABAP": "Advanced Business Application Programming",
+            "QM": "Quality Managements",
+            "PM": "Plant Maintenance"
+        };
+
+        const instructores = {
+            "15": { experiencia: "15 años", precio: 6000, cuenta: "XXXXXXXXXX" },
+            "2": { experiencia: "2 años", precio: 3000, cuenta: "XXXXXXXXXX" }
+        };
+
+        const cursoSeleccionado = document.getElementById("curso").value;
+        const instructorSeleccionado = document.getElementById("instructor").value;
+
+        const cursoNombre = cursos[cursoSeleccionado];
+        const instructor = instructores[instructorSeleccionado];
+
+        const pdfContent = `
 📄 *Confirmación de Inscripción*
 
 ✅ *Curso:* ${cursoNombre}
@@ -27,10 +108,14 @@ function generarPDF() {
 
 📌 *IMPORTANTE:*  
 Una vez realizado tu pago, favor de enviar tu comprobante de pago para completar tu inscripción.
-    `;
+        `;
 
-    document.getElementById("pdf-content").innerText = pdfContent;
-    document.getElementById("pdf-content").style.display = "block";
+        document.getElementById("pdf-content").innerText = pdfContent;
+        document.getElementById("pdf-content").style.display = "block";
 
-    alert("PDF generado correctamente. Revisa la sección de abajo.");
-}
+        alert("PDF generado correctamente. Revisa la sección de abajo.");
+    }
+</script>
+
+</body>
+</html>
