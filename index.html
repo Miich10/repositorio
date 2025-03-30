@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscripción Cursos SAP</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,7 +27,7 @@
             text-align: center;
         }
 
-        select, button {
+        input, select, button {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
@@ -58,12 +60,21 @@
 
 <div class="container">
     <h2>📚 Inscripción a Cursos SAP</h2>
-    
+
+    <label for="nombre">Nombre Completo:</label>
+    <input type="text" id="nombre" placeholder="Escribe tu nombre">
+
+    <label for="correo">Correo Electrónico:</label>
+    <input type="email" id="correo" placeholder="ejemplo@email.com">
+
+    <label for="telefono">Teléfono:</label>
+    <input type="tel" id="telefono" placeholder="Tu número de contacto">
+
     <label for="curso">Selecciona un curso:</label>
     <select id="curso">
         <option value="PP">Production Planning Advanced</option>
         <option value="ABAP">Advanced Business Application Programming</option>
-        <option value="QM">Quality Managements</option>
+        <option value="QM">Quality Management</option>
         <option value="PM">Plant Maintenance</option>
     </select>
 
@@ -73,17 +84,31 @@
         <option value="2">Instructor con 2 años de experiencia - $3,000</option>
     </select>
 
-    <button onclick="generarPDF()">📄 Generar PDF</button>
+    <button onclick="generarPDF()">📄 Generar y Descargar PDF</button>
 
     <div id="pdf-content"></div>
 </div>
 
 <script>
     function generarPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const nombre = document.getElementById("nombre").value.trim();
+        const correo = document.getElementById("correo").value.trim();
+        const telefono = document.getElementById("telefono").value.trim();
+        const cursoSeleccionado = document.getElementById("curso").value;
+        const instructorSeleccionado = document.getElementById("instructor").value;
+
+        if (!nombre || !correo || !telefono) {
+            alert("Por favor, completa todos los campos.");
+            return;
+        }
+
         const cursos = {
             "PP": "Production Planning Advanced",
             "ABAP": "Advanced Business Application Programming",
-            "QM": "Quality Managements",
+            "QM": "Quality Management",
             "PM": "Plant Maintenance"
         };
 
@@ -92,28 +117,31 @@
             "2": { experiencia: "2 años", precio: 3000, cuenta: "XXXXXXXXXX" }
         };
 
-        const cursoSeleccionado = document.getElementById("curso").value;
-        const instructorSeleccionado = document.getElementById("instructor").value;
-
         const cursoNombre = cursos[cursoSeleccionado];
         const instructor = instructores[instructorSeleccionado];
 
-        const pdfContent = `
-📄 *Confirmación de Inscripción*
+        // Contenido del PDF
+        doc.setFont("helvetica", "bold");
+        doc.text("Confirmación de Inscripción", 20, 20);
 
-✅ *Curso:* ${cursoNombre}
-👨‍🏫 *Instructor:* ${instructor.experiencia} de experiencia
-💰 *Precio:* $${instructor.precio}
-🏦 *Cuenta de pago:* ${instructor.cuenta}
+        doc.setFont("helvetica", "normal");
+        doc.text(`📌 Nombre: ${nombre}`, 20, 30);
+        doc.text(`📩 Correo: ${correo}`, 20, 40);
+        doc.text(`📞 Teléfono: ${telefono}`, 20, 50);
+        doc.text(`📚 Curso: ${cursoNombre}`, 20, 60);
+        doc.text(`👨‍🏫 Instructor: ${instructor.experiencia} de experiencia`, 20, 70);
+        doc.text(`💰 Precio: $${instructor.precio}`, 20, 80);
+        doc.text(`🏦 Cuenta de pago: ${instructor.cuenta}`, 20, 90);
 
-📌 *IMPORTANTE:*  
-Una vez realizado tu pago, favor de enviar tu comprobante de pago para completar tu inscripción.
-        `;
+        doc.setFont("helvetica", "italic");
+        doc.text("📌 IMPORTANTE:", 20, 110);
+        doc.text("Una vez realizado tu pago, favor de enviar tu comprobante de pago", 20, 120);
+        doc.text("para completar tu inscripción.", 20, 130);
 
-        document.getElementById("pdf-content").innerText = pdfContent;
-        document.getElementById("pdf-content").style.display = "block";
+        // Descargar el PDF
+        doc.save(`Inscripcion_${nombre}.pdf`);
 
-        alert("PDF generado correctamente. Revisa la sección de abajo.");
+        alert("PDF generado y descargado correctamente.");
     }
 </script>
 
