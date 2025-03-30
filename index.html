@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,6 +24,7 @@
 
         h2 {
             text-align: center;
+            color: #4CAF50;
         }
 
         input, select, button {
@@ -36,14 +36,14 @@
         }
 
         button {
-            background-color: #28a745;
+            background-color: #4CAF50;
             color: white;
             cursor: pointer;
             font-size: 16px;
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #45a049;
         }
 
         #pdf-content {
@@ -120,11 +120,13 @@
         const cursoNombre = cursos[cursoSeleccionado];
         const instructor = instructores[instructorSeleccionado];
 
-        // Contenido del PDF
+        // Contenido del PDF con formato profesional
         doc.setFont("helvetica", "bold");
+        doc.setTextColor(0, 102, 51);
         doc.text("Confirmación de Inscripción", 20, 20);
 
         doc.setFont("helvetica", "normal");
+        doc.setTextColor(0, 0, 0);
         doc.text(`📌 Nombre: ${nombre}`, 20, 30);
         doc.text(`📩 Correo: ${correo}`, 20, 40);
         doc.text(`📞 Teléfono: ${telefono}`, 20, 50);
@@ -134,9 +136,21 @@
         doc.text(`🏦 Cuenta de pago: ${instructor.cuenta}`, 20, 90);
 
         doc.setFont("helvetica", "italic");
+        doc.setTextColor(255, 69, 0);  // Color rojo anaranjado
         doc.text("📌 IMPORTANTE:", 20, 110);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(0, 0, 0);
         doc.text("Una vez realizado tu pago, favor de enviar tu comprobante de pago", 20, 120);
         doc.text("para completar tu inscripción.", 20, 130);
+
+        // Estilizado adicional
+        doc.setLineWidth(0.5);
+        doc.setDrawColor(0, 0, 0);
+        doc.line(20, 140, 180, 140);  // Línea decorativa
+
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(0, 0, 0);
+        doc.text("Gracias por confiar en nosotros. ¡Te esperamos en el curso!", 20, 150);
 
         // Descargar el PDF
         doc.save(`Inscripcion_${nombre}.pdf`);
