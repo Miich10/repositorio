@@ -1,165 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscripción Cursos SAP</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: #4CAF50;
-        }
-
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #pdf-content {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff3cd;
-            border-left: 5px solid #ffcc00;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      color: #fff;
+    }
+    header {
+      background-color: #ff4081;
+      padding: 20px;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      color: white;
+    }
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 40px;
+    }
+    .foto {
+      background-color: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+    .foto:hover {
+      transform: scale(1.05);
+    }
+    .foto img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>📚 Inscripción a Cursos SAP</h2>
-
-    <label for="nombre">Nombre Completo:</label>
-    <input type="text" id="nombre" placeholder="Escribe tu nombre">
-
-    <label for="correo">Correo Electrónico:</label>
-    <input type="email" id="correo" placeholder="ejemplo@email.com">
-
-    <label for="telefono">Teléfono:</label>
-    <input type="tel" id="telefono" placeholder="Tu número de contacto">
-
-    <label for="curso">Selecciona un curso:</label>
-    <select id="curso">
-        <option value=>Taller de Procesos ERP SAP)</option>
-        <option value="MM">Módulo MM Avanzado (Material Managements)</option>
-        <option value="PP">Production Planning Advanced</option>
-        <option value="ABAP">Advanced Business Application Programming</option>
-        <option value="QM">Quality Management</option>
-        <option value="EWM">(Extended Warehouse Management)</option>
-    </select>
-
-    <label for="instructor">Selecciona un instructor:</label>
-    <select id="instructor">
-        <option value="15">Instructor con 15 años de experiencia - $6,000</option>
-        <option value="2">Instructor con 2 años de experiencia - $3,000</option>
-    </select>
-
-    <button onclick="generarPDF()">📄 Generar y Descargar PDF</button>
-
-    <div id="pdf-content"></div>
-</div>
-
-<script>
-    function generarPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        const nombre = document.getElementById("nombre").value.trim();
-        const correo = document.getElementById("correo").value.trim();
-        const telefono = document.getElementById("telefono").value.trim();
-        const cursoSeleccionado = document.getElementById("curso").value;
-        const instructorSeleccionado = document.getElementById("instructor").value;
-
-        if (!nombre || !correo || !telefono) {
-            alert("Por favor, completa todos los campos.");
-            return;
-        }
-
-        const cursos = {
-            "PP": "Production Planning Advanced",
-            "ABAP": "Advanced Business Application Programming",
-            "QM": "Quality Management",
-            "PM": "Plant Maintenance"
-        };
-
-        const instructores = {
-            "15": { experiencia: "15 años", precio: 6000, cuenta: "XXXXXXXXXX" },
-            "2": { experiencia: "2 años", precio: 3000, cuenta: "XXXXXXXXXX" }
-        };
-
-        const cursoNombre = cursos[cursoSeleccionado];
-        const instructor = instructores[instructorSeleccionado];
-
-        // Contenido del PDF con formato profesional
-        doc.setFont("helvetica", "bold");
-        doc.setTextColor(0, 102, 51);
-        doc.text("Confirmación de Inscripción", 20, 20);
-
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(0, 0, 0);
-        doc.text(` Nombre: ${nombre}`, 20, 30);
-        doc.text(` Correo: ${correo}`, 20, 40);
-        doc.text(` Teléfono: ${telefono}`, 20, 50);
-        doc.text(` Curso: ${cursoNombre}`, 20, 60);
-        doc.text(` Instructor: ${instructor.experiencia} de experiencia`, 20, 70);
-        doc.text(` Precio: $${instructor.precio}`, 20, 80);
-        doc.text(` Cuenta de pago: ${instructor.cuenta}`, 20, 90);
-
-        doc.setFont("helvetica", "italic");
-        doc.setTextColor(255, 69, 0);  // Color rojo anaranjado
-        doc.text(" IMPORTANTE:", 20, 110);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(0, 0, 0);
-        doc.text("Una vez realizado tu pago, favor de enviar tu comprobante de pago", 20, 120);
-        doc.text("para completar tu inscripción.", 20, 130);
-
-        // Estilizado adicional
-        doc.setLineWidth(0.5);
-        doc.setDrawColor(0, 0, 0);
-        doc.line(20, 140, 180, 140);  // Línea decorativa
-
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(0, 0, 0);
-        doc.text("Gracias por confiar en nosotros. ¡Te esperamos en el curso!", 20, 150);
-
-        // Descargar el PDF
-        doc.save(`Inscripcion_${nombre}.pdf`);
-
-        alert("PDF generado y descargado correctamente.");
-    }
-</script>
-
+  <header>Productos</header>
+  <div class="galeria">
+    <div class="foto"><img src="https://via.placeholder.com/400x300?text=Producto+1" alt="Producto 1"></div>
+    <div class="foto"><img src="https://via.placeholder.com/400x300?text=Producto+2" alt="Producto 2"></div>
+    <div class="foto"><img src="https://via.placeholder.com/400x300?text=Producto+3" alt="Producto 3"></div>
+    <div class="foto"><img src="https://via.placeholder.com/400x300?text=Producto+4" alt="Producto 4"></div>
+  </div>
 </body>
 </html>
+
